@@ -36,14 +36,19 @@ function setup() {
 
   const mouse = Mouse.create(canvas.elt);
   const options = {
+    inStatic: true,
     mouse: mouse,
   };
 
-  // A fix for HiDPI displays
-  mouse.pixelRatio = pixelDensity();
-  mConstraint = MouseConstraint.create(engine, options);
-  World.add(world, mConstraint);
+  ground = Bodies.rectangle(200, height, width, 100, options);
+
+  World.add(world, ground);
 }
+
+// A fix for HiDPI displays
+mouse.pixelRatio = pixelDensity();
+mConstraint = MouseConstraint.create(engine, options);
+World.add(world, mConstraint);
 
 function keyPressed() {
   if (key == ' ') {
@@ -81,6 +86,27 @@ function setup() {
   ground = Bodies.rectangle(200, height, width, 100, options);
 
   World.add(world, ground, bird, slingshot);
+}
+
+// function keyPressed() {
+//   if (key == ' ') {
+//   }
+// }
+
+function mousePressed() {
+  boxes.push(new Box(mouseX, mouseY, random(10, 40), random(10, 40)));
+}
+
+function draw() {
+  background(51);
+  Engine.update(engine);
+  for (var i = 0; i < boxes.length; i++) {
+    boxes[i].show();
+  }
+  noStroke(255);
+  fill(170);
+  rectMode(CENTER);
+  rect(ground.position.x, ground.position.y, width, 100);
 }
 
 // function keyPressed() {
