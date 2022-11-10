@@ -28,7 +28,7 @@ function setup() {
   world = engine.world;
   ground = new Ground(width / 2, height - 10, width, 20);
   for (let i = 0; i < 3; i++) {
-    boxes[i] = new Box(450, 300 - i * 75, 84, 100);
+    boxes.push(new Box(450, 300 - i * 75, random(50, 84), random(80, 50)));
   }
   bird = new Bird(150, 300, 25);
 

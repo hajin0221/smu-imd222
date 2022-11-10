@@ -29,5 +29,5 @@ class Box {
   }
 }
 function mousePressed() {
-  boxes.push(new Box(mouseX, mouseY, random(10, 40), random(10, 40)));
+  boxes.push(new Box(mouseX, mouseY, random(70, 84), random(100, 90)));
 }
