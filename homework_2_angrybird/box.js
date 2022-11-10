@@ -28,3 +28,6 @@ class Box {
     pop();
   }
 }
+function mousePressed() {
+  boxes.push(new Box(mouseX, mouseY, random(10, 40), random(10, 40)));
+}
