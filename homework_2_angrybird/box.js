@@ -4,6 +4,8 @@
 // https://youtu.be/TDQzoe9nslY
 // https://editor.p5js.org/codingtrain/sketches/LbNt1nyxE
 
+var flag_bird_click = false;
+
 class Box {
   constructor(x, y, w, h) {
     const options = {
@@ -29,5 +31,20 @@ class Box {
   }
 }
 function mousePressed() {
-  boxes.push(new Box(mouseX, mouseY, random(70, 84), random(100, 90)));
+  let leftX = bird.body.position.x - bird.r;
+  let topY = bird.body.position.y - bird.r;
+  let rightX = bird.body.position.x + bird.r;
+  let bottomY = bird.body.position.y + bird.r;
+  if (
+    mouseX >= leftX &&
+    mouseX < rightX &&
+    mouseY >= topY &&
+    mouseY < bottomY
+  ) {
+    flag_bird_click = true;
+    slingshot.attach(bird.body);
+  }
+  if (flag_bird_click) return;
+
+  boxes.push(new Box(mouseX, mouseY, random(70, 80), random(80, 70)));
 }

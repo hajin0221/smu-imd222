@@ -56,6 +56,7 @@ function keyPressed() {
 function mouseReleased() {
   setTimeout(() => {
     slingshot.fly();
+    flag_bird_click = false;
   }, 100);
 }
 
