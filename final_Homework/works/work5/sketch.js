@@ -1,10 +1,3 @@
-// Daniel Shiffman
-// http://youtube.com/thecodingtrain
-// http://codingtra.in
-
-// Recaman Sequence Music
-// https://youtu.be/pYnaBQgnARQ
-
 let attackLevel = 1;
 let releaseLevel = 0;
 

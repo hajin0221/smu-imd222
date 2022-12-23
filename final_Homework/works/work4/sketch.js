@@ -1,10 +1,3 @@
-// Daniel Shiffman
-// http://codingtra.in
-// http://patreon.com/codingtrain
-
-// Polynomial Regression with TensorFlow.js
-// Video: https://youtu.be/tIXDik5SGsI
-
 let x_vals = [];
 let y_vals = [];
 
