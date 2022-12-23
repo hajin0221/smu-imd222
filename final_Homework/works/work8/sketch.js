@@ -1,9 +1,3 @@
-// Coding Challenge 130: Drawing with Fourier Transform and Epicycles
-// Daniel Shiffman
-// https://thecodingtrain.com/CodingChallenges/130.2-fourier-transform-drawing.html
-// https://youtu.be/n9nfTxp_APM
-// https://editor.p5js.org/codingtrain/sketches/jawHqwfda
-
 const USER = 0;
 const FOURIER = 1;
 
