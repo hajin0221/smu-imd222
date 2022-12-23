@@ -10,7 +10,7 @@ class Brick {
   // 이 함수로 사각형 생성하기
   createBrick() {
     fill(this.brickColor);
-    rect(this.xPos, this.yPos, 100, 50);
+    rect(this.xPos, this.yPos, 150, 50);
   }
 
   // 이 함수로 사각형의 움직임을
