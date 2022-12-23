@@ -7,7 +7,7 @@ function setup() {
   canvas.parent('p5Canvas');
 }
 
-particlesJS('particles-js', {
+particlesJS('p5Canvas', {
   particles: {
     number: {
       value: 380,
