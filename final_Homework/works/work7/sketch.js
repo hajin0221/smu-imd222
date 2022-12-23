@@ -1,37 +1,101 @@
-function setup() {
-  let boundingRects = document
-    .getElementById("p5Canvas")
-    .getBoundingClientRect();
-  let canvas = createCanvas(boundingRects.width, boundingRects.height);
-  canvas.parent("p5Canvas");
+let sketchRNN;
+let currentStroke;
+let x, y;
+let nextPen = 'down';
+let seedPath = [];
+let seedPoints = [];
+let personDrawing = false;
+
+function preload() {
+  sketchRNN = ml5.sketchRNN('catpig');
 }
 
-let howManyX = 20;
-let howManyY = 20;
-let globalRotateAngle = 0;
+function startDrawing() {
+  personDrawing = true;
+  x = mouseX;
+  y = mouseY;
+}
+
+function sketchRNNStart() {
+  personDrawing = false;
+
+  // Perform RDP Line Simplication
+  const rdpPoints = [];
+  const total = seedPoints.length;
+  const start = seedPoints[0];
+  const end = seedPoints[total - 1];
+  rdpPoints.push(start);
+  rdp(0, total - 1, seedPoints, rdpPoints);
+  rdpPoints.push(end);
+
+  // Drawing simplified path
+  background(255);
+  stroke(0);
+  strokeWeight(4);
+  beginShape();
+  noFill();
+  for (let v of rdpPoints) {
+    vertex(v.x, v.y);
+  }
+  endShape();
+
+  x = rdpPoints[rdpPoints.length - 1].x;
+  y = rdpPoints[rdpPoints.length - 1].y;
+
+  seedPath = [];
+  // Converting to SketchRNN states
+  for (let i = 1; i < rdpPoints.length; i++) {
+    let strokePath = {
+      dx: rdpPoints[i].x - rdpPoints[i - 1].x,
+      dy: rdpPoints[i].y - rdpPoints[i - 1].y,
+      pen: 'down',
+    };
+    seedPath.push(strokePath);
+  }
+
+  sketchRNN.generate(seedPath, gotStrokePath);
+}
+
+function setup() {
+  let canvas = createCanvas(400, 400);
+  canvas.mousePressed(startDrawing);
+  canvas.mouseReleased(sketchRNNStart);
+  background(255);
+  //sketchRNN.generate(gotStrokePath);
+  console.log('model loaded');
+}
+
+function gotStrokePath(error, strokePath) {
+  //console.error(error);
+  //console.log(strokePath);
+  currentStroke = strokePath;
+}
 
 function draw() {
-  background(255);
-  globalRotateAngle += degrees(0.0001);
-  let tileWidth = width / (howManyX + 1);
-  let tileHeight = height / (howManyY + 1);
-  for (let tileCntX = 0; tileCntX < howManyX; tileCntX++) {
-    for (let tileCntY = 0; tileCntY < howManyY; tileCntY++) {
-      let tileCenterX = tileWidth * (tileCntX + 1);
-      let tileCenterY = tileHeight * (tileCntY + 1);
-      let angleOffsetX = degrees(0.01) * tileCntX;
-      let angleOffsetY = degrees(0.01) * tileCntY;
-      push();
-      translate(tileCenterX, tileCenterY);
-      rotate(globalRotateAngle + angleOffsetX + angleOffsetY);
-      noFill();
-      stroke(250);
-      strokeWeight(10);
-      line(0 - tileWidth * 0.5 + 5, 0, 0 + tileWidth * 0.5 - 5, 0);
-      fill(255, 0, 0);
-      noStroke();
-      circle(0 + tileWidth * 0.5 - 5, 0, 10);
-      pop();
+  stroke(0);
+  strokeWeight(4);
+
+  if (personDrawing) {
+    line(mouseX, mouseY, pmouseX, pmouseY);
+    seedPoints.push(createVector(mouseX, mouseY));
+  }
+
+  if (currentStroke) {
+    if (nextPen == 'end') {
+      sketchRNN.reset();
+      sketchRNNStart();
+      currentStroke = null;
+      nextPen = 'down';
+      return;
     }
+
+    if (nextPen == 'down') {
+      line(x, y, x + currentStroke.dx, y + currentStroke.dy);
+    }
+    x += currentStroke.dx;
+    y += currentStroke.dy;
+    nextPen = currentStroke.pen;
+    currentStroke = null;
+    sketchRNN.generate(gotStrokePath);
   }
 }
