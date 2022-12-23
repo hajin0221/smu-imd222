@@ -1,10 +1,3 @@
-// Daniel Shiffman
-// http://codingtra.in
-// http://patreon.com/codingtrain
-
-// Linear Regression with TensorFlow.js
-// Video: https://www.youtube.com/watch?v=dLp10CFIvxI
-
 let x_vals = [];
 let y_vals = [];
 
